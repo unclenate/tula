@@ -1,0 +1,23 @@
+# .placeholder-ignore — paths exempted from validate-placeholders.sh
+# (one glob per line; '#' starts a comment)
+#
+# The placeholder validator flags unfilled `[[TOKEN]]` and literal `YYYY-MM-DD`
+# date-format tokens. Tula uses `YYYY-MM-DD` extensively as *documentation of
+# the memory-file naming convention* (e.g. `~/.openclaw/workspace/memory/YYYY-MM-DD.md`),
+# not as unfilled placeholders. These are legitimate and must not trip the gate.
+#
+# Governance/template-derived artifacts (docs/adr, docs/product, docs/testing,
+# docs/operating-principles.md, etc.) are deliberately NOT exempted — that is
+# exactly where real unfilled [[TOKEN]]s from harness templates should be caught.
+
+# Skill sources and references document the YYYY-MM-DD memory-path convention.
+skills/**
+
+# Agent-workspace deploy templates reference the dated memory-file convention.
+docs/agent/**
+
+# Operator scripts mention the dated backup/commit naming convention.
+scripts/**
+
+# Project README documents the workspace memory layout (YYYY-MM-DD.md).
+README.md

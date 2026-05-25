@@ -1,0 +1,42 @@
+# Tula — auto-harness manifest
+# Composed from the harness-onboarding second-pass assessment (2026-05-25),
+# profiled against the v0.5.2 catalog (agent-native delivery modules).
+# See docs/knowledge/harness-coverage-gap-analysis.md for the gap analysis
+# and docs/adr/ADR-0001-submodule-integration.md for the adoption rationale.
+schemaVersion: 1
+project:
+  id: tula
+  name: "Tula: Open-Source Personal Health AI Agent"
+  maturity: mvp          # live skills handling real PHI; past prototype, not a hosted SaaS
+  criticality: high      # personal health information (PHI)
+modules:
+  core:
+    - kernel/base
+  stacks:
+    - node-typescript     # apps/*/package.json + tsconfig.json; skill scripts are Node ESM (.mjs)
+  architectures:
+    - web-app             # apps/agent-studio, apps/my-aria — Next.js 15 App Router
+    - agent-skill-pack    # skills/ authored to skills/AGENTS.md, deployed to the OpenClaw runtime, eval-gated
+  delivery:
+    - self-hosted-oss     # published Apache-2.0 OSS + single-user self-hosted reference deployment
+  management:
+    - product-lite        # real product (README, OPEN_CORE, use-cases)
+    - eval-gated-testing  # quality gated on binary Waza evals (evals/, .waza.yaml), not %-coverage
+  agents:
+    - base
+    - claude-code         # CLAUDE.md, .claude/ present; Claude Code is the dev assistant
+    - generic-llm         # AGENTS.md declares Cursor/Windsurf/Copilot/Codex compatibility
+overrides:
+  requiredArtifacts: []
+  disabledValidations:
+    - required-artifacts
+# required-artifacts stays disabled until the module artifacts below are created
+# (Phase 2 of the progression path). Created so far: HARNESS.md, AGENTS.md,
+# docs/operating-principles.md (kernel triad complete).
+# Still to create:
+#   web-app / agent-skill-pack -> docs/architecture/overview.md
+#   eval-gated-testing         -> docs/testing/eval-strategy.md  (source: skills/AGENTS.md + .waza.yaml + docs/evals.md)
+#   self-hosted-oss            -> docs/deployment/self-hosting-guide.md (source: docs/deployment-guide.md, docs/security-model.md)
+#   product-lite               -> docs/product/{problem-statement,requirements,release-intent}.md (source: README.md, OPEN_CORE.md, docs/use-cases.md)
+#   agents/claude-code         -> .claude/settings.json
+# Remove `required-artifacts` from disabledValidations once these exist; then wire validators to CI.
