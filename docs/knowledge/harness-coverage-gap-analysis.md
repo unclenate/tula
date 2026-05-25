@@ -358,7 +358,7 @@ criticality `high`): `core/kernel/base` · `stacks/node-typescript` ·
 **Intake artifacts created:** `harness.manifest.yaml` (real composition),
 `docs/adr/ADR-0001-submodule-integration.md` (resolves the previously-dangling
 `AGENTS.md` reference), `docs/operating-principles.md` (kernel triad complete),
-root `.placeholder-ignore` (clears the `YYYY-MM-DD` false positives).
+root `.placeholder-ignore` (clears the dated-memory-path false positives).
 
 **Validators green:** manifest, module-graph, required-artifacts (disabled),
 placeholders.

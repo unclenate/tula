@@ -28,15 +28,13 @@ modules:
     - generic-llm         # AGENTS.md declares Cursor/Windsurf/Copilot/Codex compatibility
 overrides:
   requiredArtifacts: []
-  disabledValidations:
-    - required-artifacts
-# required-artifacts stays disabled until the module artifacts below are created
-# (Phase 2 of the progression path). Created so far: HARNESS.md, AGENTS.md,
-# docs/operating-principles.md (kernel triad complete).
-# Still to create:
+  disabledValidations: []
+# Phase 2 complete (2026-05-25): every active module's required artifacts exist,
+# so required-artifacts validation is ENABLED. Artifacts:
+#   kernel/base                -> HARNESS.md, AGENTS.md, docs/operating-principles.md
 #   web-app / agent-skill-pack -> docs/architecture/overview.md
-#   eval-gated-testing         -> docs/testing/eval-strategy.md  (source: skills/AGENTS.md + .waza.yaml + docs/evals.md)
-#   self-hosted-oss            -> docs/deployment/self-hosting-guide.md (source: docs/deployment-guide.md, docs/security-model.md)
-#   product-lite               -> docs/product/{problem-statement,requirements,release-intent}.md (source: README.md, OPEN_CORE.md, docs/use-cases.md)
-#   agents/claude-code         -> .claude/settings.json
-# Remove `required-artifacts` from disabledValidations once these exist; then wire validators to CI.
+#   eval-gated-testing         -> docs/testing/eval-strategy.md
+#   self-hosted-oss            -> docs/deployment/self-hosting-guide.md
+#   product-lite               -> docs/product/{problem-statement,requirements,release-intent}.md
+#   agents/claude-code         -> CLAUDE.md, .claude/settings.json
+# Next: wire validators to CI per .harness/platform/workflow/ci-integration.md.
