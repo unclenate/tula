@@ -2,10 +2,10 @@
 
 **Owner:** @unclenate
 **Created:** 2026-05-24
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25 *(second pass + Phase 2/4 complete; see resolution section)*
 **Consumer repo:** `tula` (this repo)
 **Harness:** auto-harness, mounted at `.harness/` (separate repo:
-`github.com/unclenate/auto-harness`, branch `main` @ `7970a6e`)
+`github.com/unclenate/auto-harness`, branch `main` @ `bf7265a`, v0.5.2)
 
 ---
 
@@ -360,12 +360,20 @@ criticality `high`): `core/kernel/base` · `stacks/node-typescript` ·
 `AGENTS.md` reference), `docs/operating-principles.md` (kernel triad complete),
 root `.placeholder-ignore` (clears the dated-memory-path false positives).
 
-**Validators green:** manifest, module-graph, required-artifacts (disabled),
-placeholders.
+**Validators green:** manifest, module-graph, required-artifacts (**enabled**),
+placeholders, agent-pack.
 
-**Phase 2 (to enable `required-artifacts`):** create
+**Phase 2 — complete (commit `e6aa81c`):** created
 `docs/architecture/overview.md`, `docs/testing/eval-strategy.md`,
 `docs/deployment/self-hosting-guide.md`,
-`docs/product/{problem-statement,requirements,release-intent}.md`,
-`.claude/settings.json` — then remove `required-artifacts` from
-`disabledValidations` and wire validators to CI.
+`docs/product/{problem-statement,requirements,release-intent}.md`, and
+`.claude/settings.json` (sourced from Tula's existing docs), then removed
+`required-artifacts` from `disabledValidations`. Full compliance reached —
+`required-artifacts` is now enforced.
+
+**Phase 4 — complete (commit `421b30a`):** `.github/workflows/harness.yml`
+runs the consumer validator chain (manifest, module-graph, required-artifacts,
+placeholders, agent-pack, companions) on every PR and push to `main`;
+rationale in `docs/adr/ADR-0002-ci-validator-gate.md`. It excludes
+`validate-doc-references` (harness-self only — it hard-fails for submodule
+consumers), a defect surfaced upstream as auto-harness **OPP-0023**.
