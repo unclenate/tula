@@ -436,4 +436,4 @@ With your agent running and accessible through Telegram, consider the following:
 
 ---
 
-*This guide is maintained by the Tula community. If you encounter an issue not covered here, please [open an issue](../../issues) so we can improve the documentation for everyone.*
+*This guide is maintained by the Tula community. If you encounter an issue not covered here, please [open an issue](https://github.com/realactivity/tula/issues) so we can improve the documentation for everyone.*

@@ -409,7 +409,7 @@ Contributions are welcome. Tula is built as a set of standard OpenClaw skills. C
 Ways to contribute:
 
 - Report issues. If something does not work as expected, open an issue. Detailed bug reports are among the most valuable contributions at this stage.
-- Propose a health skill. We track community ideas in [Discussions](../../discussions).
+- Propose a health skill. We track community ideas in [Discussions](https://github.com/realactivity/tula/discussions).
 - Build a skill. Read the [skills development guide](docs/skills-development.md) and use the [`med-pdf`](skills/med-pdf/) skill as the reference template. The [skills authoring conventions](skills/AGENTS.md) explain the OpenClaw-first, Waza-second priority rule. Submit a pull request.
 - Improve documentation. The deployment guide was written during a real setup session. If any section is unclear or outdated, improvements are appreciated.
 
