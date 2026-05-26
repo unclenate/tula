@@ -1,0 +1,58 @@
+# Tula — auto-harness validator chain.
+# Runs the harness consumer validators on every PR and push to main, gating
+# merges when manifest/governance drift is detected. Coexists with
+# eval-status.yml (the Waza skill-eval workflow).
+#
+# Spec: .harness/platform/workflow/ci-integration.md
+# Validator set: the "Minimal Working Workflow" consumer chain. Excludes
+# validate-doc-references (requires a <root>/platform tree — harness-self only;
+# errors for submodule consumers) and validate-catalog-counts (harness-self
+# specific). See docs/adr/ADR-0002-ci-validator-gate.md for rationale.
+name: Harness Validators
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validators:
+    name: Validators
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive   # auto-harness is mounted at .harness/
+          fetch-depth: 0          # companion validator diffs against the base branch
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+
+      - name: Validate manifest structure
+        run: bash .harness/platform/validators/validate-manifest.sh harness.manifest.yaml
+
+      - name: Validate module graph
+        run: bash .harness/platform/validators/validate-module-graph.sh harness.manifest.yaml
+
+      - name: Validate required artifacts
+        run: bash .harness/platform/validators/validate-required-artifacts.sh harness.manifest.yaml .
+
+      - name: Validate placeholders
+        run: bash .harness/platform/validators/validate-placeholders.sh .
+
+      - name: Validate agent pack
+        run: bash .harness/platform/validators/validate-agent-pack.sh harness.manifest.yaml .
+
+      - name: Validate companion rules
+        # PR-diff-based; only meaningful on pull_request events.
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          bash .harness/platform/validators/validate-companions.sh \
+            harness.manifest.yaml . "$BASE_REF"

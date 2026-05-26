@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash .harness/platform/validators/validate-manifest.sh:*)",
+      "Bash(bash .harness/platform/validators/validate-module-graph.sh:*)",
+      "Bash(bash .harness/platform/validators/validate-placeholders.sh:*)",
+      "Bash(bash .harness/platform/validators/validate-required-artifacts.sh:*)",
+      "Bash(waza check:*)"
+    ],
+    "deny": []
+  }
+}
