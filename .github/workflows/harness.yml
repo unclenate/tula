@@ -4,10 +4,13 @@
 # eval-status.yml (the Waza skill-eval workflow).
 #
 # Spec: .harness/platform/workflow/ci-integration.md
-# Validator set: the "Minimal Working Workflow" consumer chain. Excludes
-# validate-doc-references (requires a <root>/platform tree — harness-self only;
-# errors for submodule consumers) and validate-catalog-counts (harness-self
-# specific). See docs/adr/ADR-0002-ci-validator-gate.md for rationale.
+# Validator set: the consumer chain — manifest, module-graph, required-artifacts,
+# placeholders, agent-pack, doc-references, and companions (PR-only). Excludes
+# only validate-catalog-counts (harness-self specific). doc-references was
+# re-included after the upstream OPP-0023/PRD-0012 fix made it consumer-aware
+# (it no longer requires a top-level platform/ tree). tula's .doc-reference-ignore
+# exempts GitHub-valid-but-GitBook-fragile dir targets + the CI-generated
+# docs/evals.md. See docs/adr/ADR-0002-ci-validator-gate.md for rationale.
 name: Harness Validators
 
 on:
@@ -47,6 +50,9 @@ jobs:
 
       - name: Validate agent pack
         run: bash .harness/platform/validators/validate-agent-pack.sh harness.manifest.yaml .
+
+      - name: Validate doc references
+        run: bash .harness/platform/validators/validate-doc-references.sh .
 
       - name: Validate companion rules
         # PR-diff-based; only meaningful on pull_request events.

@@ -41,15 +41,14 @@ structure vs. skill behavior).
 
 ### Validators deliberately excluded
 
-- **`validate-doc-references`** — hard-requires a `<project-root>/platform/`
-  directory (it scans the harness's own platform docs) and exits `2` (usage
-  error) otherwise. For a *submodule* consumer the platform lives at
-  `.harness/platform/`, so this validator cannot run against Tula's own docs.
-  It is therefore omitted, matching the `ci-integration.md` "Minimal Working
-  Workflow" (which omits it) rather than the `templates/ci/github-actions.yml`
-  starter (which includes it — a mismatch worth fixing upstream; see Notes).
+- **`validate-doc-references`** — *(Originally excluded; **re-included
+  2026-05-26** after the upstream fix — see Update below.)* It had hard-required
+  a `<project-root>/platform/` directory and exited `2` otherwise, so for a
+  *submodule* consumer (platform at `.harness/platform/`) it could not run
+  against Tula's own docs.
 - **`validate-catalog-counts`** — its recipes and assertions are specific to
-  the auto-harness repository structure; not applicable to a consumer.
+  the auto-harness repository structure; not applicable to a consumer. *(Still
+  excluded.)*
 
 ## Consequences
 
@@ -72,10 +71,25 @@ structure vs. skill behavior).
 
 ## Notes
 
-The exclusion of `validate-doc-references` surfaces a likely upstream
-inconsistency: `platform/templates/ci/github-actions.yml` includes a
-doc-references step that exits `2` for the recommended submodule layout, while
-`platform/workflow/ci-integration.md`'s minimal workflow omits it. A future
-upstream fix would make the validator either no-op or scan consumer docs when
-no `<root>/platform/` exists. Recorded here for a potential auto-harness
-observation/OPP; not actioned from this consumer repo.
+The exclusion of `validate-doc-references` surfaced a likely upstream
+inconsistency: `platform/templates/ci/github-actions.yml` included a
+doc-references step that exited `2` for the recommended submodule layout, while
+`platform/workflow/ci-integration.md`'s minimal workflow omitted it.
+
+## Update (2026-05-26) — doc-references re-included
+
+That upstream defect was filed as auto-harness **OPP-0023** and fixed in
+**PRD-0012** (auto-harness #65): `validate-doc-references` no longer requires a
+top-level `platform/` — it scans the consumer's own docs (its general
+link-resolution pass) and reserves exit `2` for a genuinely missing project
+root. The fix is picked up here by bumping the `.harness` submodule.
+
+With the fix landed, `validate-doc-references` is **now included** in this
+workflow. Tula's docs pass it after (a) fixing real broken links —
+`README.md`'s Discussions link and two `docs/*` "open an issue" links now use
+absolute GitHub URLs — and (b) adding a root `.doc-reference-ignore` that
+exempts GitHub-valid-but-GitBook-fragile directory targets (e.g. `skills/*/`,
+`evals/`), the CI-generated `docs/evals.md`, and the canonical `articles/`
+links (maintainer-authored, upstream's to maintain). Tula renders on GitHub,
+not GitBook, so the validator's GitBook-fragility class is exempted by design.
+`validate-catalog-counts` remains excluded (harness-self specific).

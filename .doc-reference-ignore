@@ -1,0 +1,43 @@
+# .doc-reference-ignore — paths exempted from validate-doc-references.sh
+# (one regex per line, matched against the resolved project-relative path and
+# the raw link target; '#' starts a comment)
+#
+# Tula renders on GitHub.com, not GitBook. The validator additionally flags
+# targets that resolve on GitHub but are fragile on GitBook (bare extensionless
+# files; trailing-slash directory targets). The entries below are GitHub-valid
+# links we intentionally keep — they are NOT broken; they are GitBook-only
+# fragilities that do not apply to this repo's render target. Genuinely broken
+# links (missing files, wrong relative paths) are deliberately NOT listed here
+# so the validator still catches them.
+
+# Root license/notice files (bare, extensionless — idiomatic GitHub root links).
+# Covers root README/TRADEMARK and skills/health-records/ (which ships its own LICENSE).
+^LICENSE$
+^NOTICE$
+
+# Directory targets — GitHub renders the folder (and its README/SKILL); the
+# link points at a real directory deliberately. Anchored so only these exact
+# dirs are exempt (a broken link elsewhere still fails).
+^evals/?$
+^scripts/?$
+^skills/med-pdf/?$
+^skills/epic-note/?$
+^skills/health-records/?$
+^skills/myhealth-pulse/?$
+^skills/memory-diff/?$
+^apps/my-aria/?$
+^scripts/email-smoke-test/?$
+
+# CI-generated status doc — produced by .github/workflows/eval-status.yml on
+# main, not committed to the tree, so it resolves only post-CI. Referenced from
+# README.md and OPEN_CORE.md.
+^docs/evals\.md$
+
+# Canonical articles (articles/*.md) are maintainer-authored content carried
+# from the origin repo; their internal links are upstream's to maintain and are
+# out of scope for this consumer's CI. The targets below are the relative-link
+# forms used inside articles/i-built-the-patient-portal-my-agent-deserves.md.
+^articles/i-gave-an-ai-agent-oauth-access-to-my-hospital\.md$
+^apps/my-aria/public/my-aria-dashboard\.png$
+^apps/my-aria/public/my-aria-ai-chats\.png$
+^apps/my-aria/public/my-aria-home-devices\.png$
